@@ -9,8 +9,21 @@ body {
 	justify-content: flex-end;
 }
 
-#connection[state="on"] {
+#connection .text,
+#connection .icon {
+	margin-left: 2px;
+	margin-right: 2px;
 }
 
-#connection[state="off"] {
+#connection .icon {
+	font-size: 26px;
+	line-height: 19px;
+}
+
+#connection[data-state="on"] .icon {
+	color: hsl(119, 100%, 36%);
+}
+
+#connection[data-state="off"] .icon {
+	color: hsl(359, 100%, 45%);
 }

@@ -16,9 +16,10 @@ remote.getCurrentWindow().on('close', (e) => {
 
 
 function setConnectionStatus(isConnected) {
-	let e = document.getElementById('connection');
-	e.innerText = (isConnected ? 'Connected' : 'Disconnected');
-	e.setAttribute('state', (isConnected ? 'on' : 'off'));
+	let connection = document.getElementById('connection');
+	let text = connection.getElementsByClassName('text')[0];
+	text.innerText = (isConnected ? 'Connected' : 'Disconnected');
+	connection.setAttribute('data-state', (isConnected ? 'on' : 'off'));
 }
 
 function getCleanSchedule() {
