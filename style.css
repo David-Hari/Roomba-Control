@@ -1,0 +1,16 @@
+
+body {
+    padding: 1em;
+}
+
+#connection {
+	display: flex;
+	align-items: flex-start;
+	justify-content: flex-end;
+}
+
+#connection[state="on"] {
+}
+
+#connection[state="off"] {
+}

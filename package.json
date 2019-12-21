@@ -1,0 +1,14 @@
+{
+  "name": "roomba",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "bootstrap": "^4.4.1",
+    "dorita980": "^3.1.7",
+    "electron": "^7.1.5"
+  }
+}
