@@ -1,6 +1,13 @@
 
+html {
+	height: 100%;
+}
+
 body {
+	height: 100%;
     padding: 1em;
+	display: grid;
+	grid-template-rows: 24px 1fr;
 }
 
 #connection {
@@ -26,4 +33,23 @@ body {
 
 #connection[data-state="off"] .icon {
 	color: hsl(359, 100%, 45%);
+}
+
+
+.nav-tabs .nav-link {
+	background: hsl(0, 0%, 93%);
+	border-color: hsl(210, 14%, 89%);
+}
+
+
+#pages {
+	display: grid;
+	grid-template-rows: max-content 1fr;
+}
+
+.page {
+	padding: 1em;
+}
+
+#clean-rooms-container {
 }

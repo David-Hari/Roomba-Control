@@ -10,12 +10,35 @@
 		<title>Roomba Control</title>
 	</head>
 	<body>
-		<section id="connection" data-state="off">
-			<span class="text">Disconnected</span>
-			<span class="icon">●</span>
-		</section>
-		<section>
-			<header>Select rooms to clean</header>
+		<header>
+			<div id="connection" data-state="off">
+				<span class="text">Disconnected</span>
+				<span class="icon">●</span>
+			</div>
+		</header>
+		<section id="pages">
+			<ul id="tabs" class="nav nav-tabs">
+				<li class="nav-item">
+					<button id="tab-clean" class="nav-link active">Clean</button>
+				</li>
+				<li class="nav-item">
+					<button id="tab-schedule" class="nav-link">Schedule</button>
+				</li>
+				<li class="nav-item">
+					<button id="tab-info" class="nav-link">Info</button>
+				</li>
+			</ul>
+			<section class="page" id="page-clean">
+				<p>Select rooms to clean</p>
+				<div id="clean-rooms-container"></div>
+				<button id="clean-start-button">Start</button>
+			</section>
+			<section class="page" id="page-schedule">
+				<p>Schedule</p>
+			</section>
+			<section class="page" id="page-info">
+				<p>Info</p>
+			</section>
 		</section>
 
 		<script src="./window.js"></script>
