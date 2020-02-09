@@ -10,6 +10,11 @@ body {
 	grid-template-rows: 24px 1fr;
 }
 
+header {
+	display: flex;
+	justify-content: space-between;
+}
+
 #connection {
 	display: flex;
 	align-items: flex-start;
@@ -45,6 +50,7 @@ body {
 #pages {
 	display: grid;
 	grid-template-rows: max-content 1fr;
+	margin-top: 15px
 }
 
 .page {
