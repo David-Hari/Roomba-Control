@@ -8,6 +8,13 @@ const infoPage = require('./info');
 const logger = require('./logger');
 
 let roomba = null;
+let pages = {
+	'clean': cleanPage,
+	'map': mapPage,
+	'schedule': schedulePage,
+	'info': infoPage
+};
+
 main();
 
 
@@ -15,18 +22,12 @@ main();
  * Entry point
  */
 function main() {
-	initialize();
-
 	process.env.ROBOT_CIPHERS = 'AES128-SHA';  // See https://github.com/electron/electron/issues/20759
 	roomba = new Roomba.Local(config.blid, config.password, config.ipAddress, 2, config.interval);
 
 	roomba.on('connect', function() {
 		setConnectionStatus(true);
-
-		cleanPage.initialize(roomba);
-		mapPage.initialize(roomba);
-		schedulePage.initialize(roomba);
-		infoPage.initialize(roomba);
+		initializePages();
 
 		roomba.getRobotState(['name'])
 		.then((info) => {
@@ -47,11 +48,11 @@ function main() {
 
 
 /*
- * Sets up event listeners for UI elements.
+ * Sets up event listeners for tabs and open the first page.
  */
-function initialize() {
+function initializePages() {
 	let names = [ 'clean', 'map', 'schedule', 'info' ];
-	for (let name of names) {
+	for (let name of Object.keys(pages)) {
 		document.getElementById('tab-'+name).addEventListener('click', openPage.bind(null, name));
 	}
 	openPage(names[0]);
@@ -66,13 +67,20 @@ function openPage(pageName) {
 	for (let each of tabs.getElementsByClassName('nav-link')) {
 		each.classList.remove('active');
 	}
-	let pages = document.getElementById('pages');
-	for (let each of pages.getElementsByClassName('page')) {
+	let pageElements = document.getElementById('pages');
+	for (let each of pageElements.getElementsByClassName('page')) {
 		each.style.display = 'none';
 	}
 
 	document.getElementById('tab-'+pageName).classList.add('active');
 	document.getElementById('page-'+pageName).style.display = 'block';
+
+	let page = pages[pageName];
+	if (!page.hasBeenInitialized) {
+		console.log('Initializing page: ' + pageName);
+		page.initialize(roomba);
+		page.hasBeenInitialized = true;
+	}
 }
 
 

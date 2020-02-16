@@ -1,31 +1,34 @@
 const logger = require('./logger');
 
+let hasBeenInitialized = false;
+let roomba = null;
 let currentPos = {x: 0, y: 0};
-let domCanvas = null;
+let domCanvas = null;     // Actual canvas on the page
 let domContext = null;
-let mapCanvas = null;
+let mapCanvas = null;     // Off-screen canvas to draw the map
 let mapContext = null;
-let robotCanvas = null;
-let robotContext = null;
 
 
 /*
  * Fetches info to make the UI.
  */
-function initialize(roomba) {
+function initialize(r) {
+	roomba = r;
 	domCanvas = document.getElementById('page-map').getElementsByTagName('canvas')[0];
 	domContext = domCanvas.getContext('2d');
-
 
 	/* Create virtual canvas - not appended to the DOM */
 	mapCanvas = document.createElement('canvas');
 	mapContext = mapCanvas.getContext('2d');
-	robotCanvas = document.createElement('canvas');
-	robotContext = robotCanvas.getContext('2d');
 
-	setTimeout(resize, 1000);
+	roomba.on('mission', handleUpdate);
+	setTimeout(resize, 100);
 }
 
+
+/*
+ * Sets the size of the canvas to the actual size it is on the page
+ */
 function resize() {
 	let width = domCanvas.clientWidth;
 	let height = domCanvas.clientHeight;
@@ -33,25 +36,44 @@ function resize() {
 	domCanvas.height = height;
 	mapCanvas.width = width;
 	mapCanvas.height = height;
-	robotCanvas.width = width;
-	robotCanvas.height = height;
 	draw();
 }
 
 
-function draw() {
-	domContext.fillRect(50,50,150,50);
-	mapContext.fillStyle = 'blue';
-	mapContext.fillRect(50,50,150,150);
-	robotContext.fillStyle = 'yellow';
-	robotContext.fillRect(50,50,100,50);
+/*
+ * Gets position data to draw
+ */
+function handleUpdate(data) {
+}
 
-	/* render virtual canvases on DOM canvas */
+
+/*
+ * Draws all the stuff
+ */
+function draw() {
+	drawMap();
+	drawOverlay();
+}
+
+
+/*
+ * Draws the map canvas on the actual one
+ */
+function drawMap() {
 	domContext.drawImage(mapCanvas, 0, 0, domCanvas.width, domCanvas.height);
-	domContext.drawImage(robotCanvas, 0, 0, domCanvas.width, domCanvas.height);
+}
+
+
+/*
+ * Draws the Roomba icon and possibly other info
+ */
+function drawOverlay() {
+	domContext.fillStyle = 'blue';
+	domContext.fillRect(50,50,150,50);
 }
 
 
 module.exports = {
-	initialize
+	initialize,
+	hasBeenInitialized
 };

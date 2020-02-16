@@ -1,5 +1,6 @@
 const logger = require('./logger');
 
+let hasBeenInitialized = false;
 let roomba = null;
 let pmap_id = null;
 let user_pmapv_id = null;
@@ -9,9 +10,10 @@ let user_pmapv_id = null;
  * Sets up event listener for start button and fetches info to make the UI.
  */
 function initialize(r) {
+	roomba = r;
+
 	document.getElementById('clean-start-button').addEventListener('click', cleanSelectedRooms);
 
-	roomba = r;
 	roomba.getRobotState(['pmaps', 'cleanSchedule2'])
 	.then((info) => {
 		info.pmaps.forEach((each) => console.log(each));
@@ -101,5 +103,6 @@ function cleanSelectedRooms() {
 
 
 module.exports = {
-	initialize
+	initialize,
+	hasBeenInitialized
 };

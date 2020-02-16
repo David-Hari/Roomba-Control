@@ -54,6 +54,7 @@ header {
 }
 
 .page {
+	display: none;   /* Initially hidden */
 	padding: 1em;
 }
 
