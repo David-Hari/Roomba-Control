@@ -57,5 +57,7 @@ header {
 	padding: 1em;
 }
 
-#clean-rooms-container {
+#page-map canvas {
+	width: 100%;
+	height: 100%;
 }

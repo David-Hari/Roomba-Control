@@ -1,8 +1,10 @@
 const { remote } = require('electron');
 const Roomba = require('dorita980');
 const config = require('./config.json');
-const clean = require('./clean');
-const schedule = require('./schedule');
+const cleanPage = require('./clean');
+const mapPage = require('./map');
+const schedulePage = require('./schedule');
+const infoPage = require('./info');
 const logger = require('./logger');
 
 let roomba = null;
@@ -21,8 +23,10 @@ function main() {
 	roomba.on('connect', function() {
 		setConnectionStatus(true);
 
-		clean.initialize(roomba);
-		schedule.initialize(roomba);
+		cleanPage.initialize(roomba);
+		mapPage.initialize(roomba);
+		schedulePage.initialize(roomba);
+		infoPage.initialize(roomba);
 
 		roomba.getRobotState(['name'])
 		.then((info) => {
@@ -31,7 +35,6 @@ function main() {
 		.catch(logger.logError);
 
 		roomba.on('state', (info) => {
-			console.log(info);
 			setBatteryPercent(info.batPct);
 		});
 	});
@@ -47,7 +50,7 @@ function main() {
  * Sets up event listeners for UI elements.
  */
 function initialize() {
-	let names = [ 'clean', 'schedule', 'info' ];
+	let names = [ 'clean', 'map', 'schedule', 'info' ];
 	for (let name of names) {
 		document.getElementById('tab-'+name).addEventListener('click', openPage.bind(null, name));
 	}
