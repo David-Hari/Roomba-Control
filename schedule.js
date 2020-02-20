@@ -1,14 +1,12 @@
 const logger = require('./logger');
 
 let hasBeenInitialized = false;
-let roomba = null;
 
 
 /*
  * Fetches info to make the UI.
  */
-function initialize(r) {
-	roomba = r;
+function initialize(roomba) {
 	roomba.getRobotState(['cleanSchedule2'])
 	.then((info) => {
 		makeScheduleUI(info.cleanSchedule2);

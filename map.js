@@ -44,6 +44,7 @@ function resize() {
  * Gets position data to draw
  */
 function handleUpdate(data) {
+	logger.logMessage(JSON.stringify(data));
 }
 
 
