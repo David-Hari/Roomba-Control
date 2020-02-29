@@ -1,12 +1,11 @@
 let hasBeenInitialized = false;
-let logTextArea = null;
+let logTextArea = document.getElementById('logtext');
 
 
 /*
  * Fetches info to make the UI.
  */
 function initialize(roomba) {
-	logTextArea = document.getElementById('logtext');
 }
 
 
