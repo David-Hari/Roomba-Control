@@ -3,6 +3,7 @@ const logger = require('./logger');
 let hasBeenInitialized = false;
 let roomba = null;
 let currentPos = {x: 0, y: 0};
+let currentAngle = 0;  // degrees
 let scale = 1.0;
 let viewport = {x: 0, y: 0, width: 0, height: 0};
 let oldViewportOrigin = {x: 0, y: 0};
@@ -13,6 +14,9 @@ let domCanvas = null;     // Actual canvas on the page
 let domContext = null;
 let mapCanvas = null;     // Off-screen canvas to draw the map
 let mapContext = null;
+let robotIcon = null;
+const LINE_THICKNESS = 16;  // cm
+const ROOMBA_DIAMETER = 33; // cm
 
 
 /*
@@ -26,6 +30,9 @@ function initialize(r) {
 	/* Create virtual canvas - not appended to the DOM */
 	mapCanvas = document.createElement('canvas');
 	mapContext = mapCanvas.getContext('2d');
+
+	robotIcon = document.createElement('img');
+	robotIcon.src = 'robot icon.svg';
 
 	domCanvas.addEventListener("mousedown", mouseDown);
 	domCanvas.addEventListener("mouseup", mouseUp);
@@ -58,9 +65,16 @@ function initialize(r) {
  */
 function clearMap() {
 	mapContext.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
+	mapCanvas.width = 4000;
+	mapCanvas.height = 4000;
+	scale = 0.4;
+	viewport.x = -500;
+	viewport.y = -500;
+	viewport.width = mapCanvas.width * scale;
+	viewport.height = mapCanvas.height * scale;
 	mapContext.beginPath();
 	mapContext.strokeStyle = 'rgb(0, 200, 0)';
-	mapContext.lineWidth = 16;
+	mapContext.lineWidth = LINE_THICKNESS;
 	mapContext.lineCap = 'round';
 	mapContext.lineJoin = 'round';
 }
@@ -70,15 +84,20 @@ function clearMap() {
  * Sets the size of the canvas to the actual size it is on the page
  */
 function resize() {
-	let width = domCanvas.clientWidth;
-	let height = domCanvas.clientHeight;
-	domCanvas.width = width;
-	domCanvas.height = height;
-	mapCanvas.width = 4000;
-	mapCanvas.height = 4000;
-	viewport.width = width;
-	viewport.height = height;
+	domCanvas.width = domCanvas.clientWidth;
+	domCanvas.height = domCanvas.clientHeight;
 	draw();
+}
+
+
+/*
+ * Co-ordinate conversion
+ */
+function robotPosToMapPos(point) {
+	return {x: (mapCanvas.width / 2) + point.x, y: (mapCanvas.height / 2) + point.y};
+}
+function mapPosToViewportPos(point) {
+	return {x: viewport.x + (point.x * scale), y: viewport.y + (point.y * scale)};
 }
 
 
@@ -88,8 +107,6 @@ function mouseDown(event) {
 	clickPosition = {x: event.clientX, y: event.clientY};
 	isMouseDown = true;
 }
-
-
 function mouseUp(event) {
 	event.preventDefault();
 	isMouseDown = false;
@@ -115,10 +132,11 @@ function mouseMove(event) {
 function mouseWheel(event) {
 	event.preventDefault();
 
-	scale = Math.max(scale + (scale * (-Math.sign(event.deltaY) * wheelZoomAmount)), 0.1);
+	scale = scale + (scale * (-Math.sign(event.deltaY) * wheelZoomAmount));
+	scale = Math.min(Math.max(scale, 0.1), 10);
 
-	const newWidth = domCanvas.clientWidth * scale;
-	const newHeight = domCanvas.clientHeight * scale;
+	const newWidth = mapCanvas.width * scale;
+	const newHeight = mapCanvas.height * scale;
 	const diffW = newWidth - viewport.width;
 	const diffH = newHeight - viewport.height;
 	const cursorRatioX = (event.clientX - viewport.x) / viewport.width;
@@ -127,6 +145,7 @@ function mouseWheel(event) {
 	viewport.y -= diffH * cursorRatioY;
 	viewport.width = newWidth;
 	viewport.height = newHeight;
+
 	draw();
 }
 
@@ -137,8 +156,9 @@ function mouseWheel(event) {
 function handleUpdate(data) {
 	let status = data.cleanMissionStatus;
 	if ((status.phase === 'run' || status.phase === 'hmPostMsn') && data.pose) {
-		currentPos = data.pose.point;
-		mapContext.lineTo(2000+currentPos.x, 2000+currentPos.y);
+		currentPos = robotPosToMapPos(data.pose.point);
+		currentAngle = data.pose.theta;
+		mapContext.lineTo(currentPos.x, currentPos.y);
 		mapContext.stroke();
 		draw();
 	}
@@ -149,6 +169,7 @@ function handleUpdate(data) {
  * Draws all the stuff
  */
 function draw() {
+	domContext.clearRect(0, 0, domCanvas.width, domCanvas.height);
 	drawMap();
 	drawOverlay();
 }
@@ -158,11 +179,9 @@ function draw() {
  * Draws the map canvas on the actual one
  */
 function drawMap() {
-	domContext.clearRect(0, 0, domCanvas.width, domCanvas.height);
 	domContext.drawImage(mapCanvas,
 	        0, 0, mapCanvas.width, mapCanvas.height,
 	        viewport.x, viewport.y, viewport.width, viewport.height);
-	        //0, 0, domCanvas.width, domCanvas.height);
 }
 
 
@@ -170,6 +189,12 @@ function drawMap() {
  * Draws the Roomba icon and possibly other info
  */
 function drawOverlay() {
+	let pos = mapPosToViewportPos(currentPos);
+	let size = ROOMBA_DIAMETER * scale;
+	pos.x -= size / 2;  // So it will be centered
+	pos.y -= size / 2;
+	// TODO: Rotate by currentAngle
+	domContext.drawImage(robotIcon, pos.x, pos.y, size, size);
 }
 
 
