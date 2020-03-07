@@ -7,7 +7,7 @@
    xmlns="http://www.w3.org/2000/svg"
    width="33cm"
    height="33cm"
-   viewBox="0 0 330 329.99999"
+   viewBox="0 0 330 330"
    version="1.1"
    id="roomba-icon">
   <defs
@@ -25,39 +25,42 @@
     </rdf:RDF>
   </metadata>
   <g
-     id="layer1"
-     transform="translate(0,32.999985)">
+     id="layer1">
     <circle
-       style="fill:#056ebe;fill-opacity:1;stroke:#000000;stroke-width:15.28257561;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#3f3f3f;fill-opacity:1;stroke:#000000;stroke-width:15.28257561;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="outer-circle"
-       cy="132.00002"
+       cy="165"
        cx="165"
        r="157.35872" />
     <path
-       style="fill:#056ebe;fill-opacity:1;stroke:#000000;stroke-width:2.05785918;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="path5203"
-       d="m 239.99988,131.99986 a 75,75 0 0 1 -37.5,64.95191 75,75 0 0 1 -75,0 75,75 0 0 1 -37.500002,-64.95191" />
+       id="path1"
+       d="M 90.000001,30.299798 V 165.29981 c 0,42.08484 36.682859,75.62641 75.831959,75.13977 37.71175,-0.46878 74.16838,-30.92489 74.16838,-75.13977 V 30.299798 c 0,0 -33.81101,-20.204313 -74.82918,-20.4508835 C 127.30884,9.6213155 90.000001,30.299798 90.000001,30.299798"
+       style="fill:#000000;fill-opacity:0.50196078;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
-       d="M 90,-2.9999728 V 132.00003"
-       id="path5205" />
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:2.05785918;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path2"
+       d="m 239.99981,165.09968 a 74.999959,75.000001 0 0 1 -37.49999,64.95191 74.999959,75.000001 0 0 1 -74.99996,0 74.999959,75.000001 0 0 1 -37.499982,-64.95191" />
     <path
        style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 240,-2.9999728 V 132.00003"
-       id="path5207" />
+       d="M 90,30.099863 V 165.09985"
+       id="path3" />
     <path
-       id="path818"
-       d="m 89.999995,28.586357 c 0.02658,5.171565 5.147502,10.026589 10,10 5.211375,-0.02856 129.999995,0 129.999995,0 5.94411,0.05717 10.03988,-4.376422 10,-10"
+       style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 239.99993,30.099863 V 165.09985"
+       id="path4" />
+    <path
+       id="path5"
+       d="m 89.999995,61.686192 c 0.02658,5.171565 5.147499,10.026589 9.999995,10 5.21137,-0.02856 129.99993,0 129.99993,0 5.94411,0.05717 10.03988,-4.376422 10,-10"
        style="fill:none;stroke:#000000;stroke-width:1.99999988;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     <path
-       id="path818-0"
-       d="m 89.999995,20.000012 c -0.0266,3.040112 2.080261,5.071991 5,5 H 234.99999 c 3.31207,0 4.99799,-1.636488 4.998,-5"
+       id="path6"
+       d="m 89.999995,53.099847 c -0.0266,3.040112 2.08026,5.071991 4.999997,5 H 234.99992 c 3.31207,0 4.99799,-1.636488 4.998,-5"
        style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     <circle
-       r="19.999998"
-       cy="131"
-       cx="165.99998"
-       id="path835"
-       style="fill:#056ebe;fill-opacity:1;stroke:#000000;stroke-width:2.99999984;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+       cy="165"
+       cx="165"
+       id="path7"
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:2.99999976;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       r="20" />
   </g>
 </svg>

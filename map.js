@@ -15,7 +15,7 @@ let domContext = null;
 let mapCanvas = null;     // Off-screen canvas to draw the map
 let mapContext = null;
 let robotIcon = null;
-const LINE_THICKNESS = 16;  // cm
+const LINE_THICKNESS = 20;  // cm
 const ROOMBA_DIAMETER = 33; // cm
 
 
@@ -55,8 +55,18 @@ function initialize(r) {
 			handleUpdate(fakeData[i]);
 			i++;
 		}
-	}, 200);
+	}, 400);
 	/******/
+}
+
+
+/*
+ * Sets the size of the canvas to the actual size it is on the page
+ */
+function resize() {
+	domCanvas.width = domCanvas.clientWidth;
+	domCanvas.height = domCanvas.clientHeight;
+	draw();
 }
 
 
@@ -77,16 +87,6 @@ function clearMap() {
 	mapContext.lineWidth = LINE_THICKNESS;
 	mapContext.lineCap = 'round';
 	mapContext.lineJoin = 'round';
-}
-
-
-/*
- * Sets the size of the canvas to the actual size it is on the page
- */
-function resize() {
-	domCanvas.width = domCanvas.clientWidth;
-	domCanvas.height = domCanvas.clientHeight;
-	draw();
 }
 
 
@@ -157,7 +157,7 @@ function handleUpdate(data) {
 	let status = data.cleanMissionStatus;
 	if ((status.phase === 'run' || status.phase === 'hmPostMsn') && data.pose) {
 		currentPos = robotPosToMapPos(data.pose.point);
-		currentAngle = data.pose.theta;
+		currentAngle = data.pose.theta + 90;   // Angle is off by 90 degrees for some reason
 		mapContext.lineTo(currentPos.x, currentPos.y);
 		mapContext.stroke();
 		draw();
@@ -191,10 +191,10 @@ function drawMap() {
 function drawOverlay() {
 	let pos = mapPosToViewportPos(currentPos);
 	let size = ROOMBA_DIAMETER * scale;
-	pos.x -= size / 2;  // So it will be centered
-	pos.y -= size / 2;
-	// TODO: Rotate by currentAngle
-	domContext.drawImage(robotIcon, pos.x, pos.y, size, size);
+	domContext.translate(pos.x, pos.y);
+	domContext.rotate(currentAngle * Math.PI / 180);
+	domContext.drawImage(robotIcon, -(size / 2), -(size / 2), size, size);
+	domContext.setTransform(1, 0, 0, 1, 0, 0);  // Reset transformation matrix to the identity matrix
 }
 
 
