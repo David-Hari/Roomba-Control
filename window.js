@@ -36,7 +36,7 @@ function main() {
 		.catch(logger.logError);
 
 		roomba.on('state', (info) => {
-			setBatteryPercent(info.batPct);
+			setStatus(info);
 		});
 	});
 
@@ -105,8 +105,17 @@ function setRobotName(str) {
 
 
 /*
- * Shows the given battery percent in the UI
+ * Shows the status of the robot, such as the battery percent and if the bin is full.
  */
-function setBatteryPercent(num) {
-	document.getElementById('batteryPercent').textContent = 'Battery: ' + num + '%';
+function setStatus(info) {
+	let str = 'Battery: ' + info.batPct + '%';
+	if (info.bin.present) {
+		if (info.bin.full) {
+			str += ', Bin: full';
+		}
+	}
+	else {
+		str += ', Bin: missing';
+	}
+	document.getElementById('status').textContent = str;
 }
