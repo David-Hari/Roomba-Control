@@ -38,14 +38,14 @@ function initialize(r) {
 	domCanvas.addEventListener("mouseup", mouseUp);
 	domCanvas.addEventListener("mousemove", mouseMove);
 	domCanvas.addEventListener("wheel", mouseWheel);
-	//roomba.on('mission', handleUpdate);
+	roomba.on('mission', handleUpdate);
 
 	resize();
 	clearMap();
 
 
 	/***  TESTING  ***/
-	let fakeData = require('./map.json');
+	/*let fakeData = require('./map.json');
 	let i = 0, timer = 0;
 	timer = setInterval(() => {
 		if (i >= fakeData.length) {
@@ -55,7 +55,7 @@ function initialize(r) {
 			handleUpdate(fakeData[i]);
 			i++;
 		}
-	}, 400);
+	}, 400);*/
 	/******/
 }
 
