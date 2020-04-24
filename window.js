@@ -23,11 +23,14 @@ main();
  */
 function main() {
 	process.env.ROBOT_CIPHERS = 'AES128-SHA';  // See https://github.com/electron/electron/issues/20759
-	roomba = new Roomba.Local(config.blid, config.password, config.ipAddress, 2, config.interval);
+	initializePages();
 
+	logger.logMessage('Attempting to connect to Roomba...');
+	roomba = new Roomba.Local(config.blid, config.password, config.ipAddress, 2, config.interval);
 	roomba.on('connect', function() {
+		logger.logMessage('Roomba connected.');
 		setConnectionStatus(true);
-		initializePages();
+		openPage('clean');
 
 		roomba.getRobotState(['name'])
 		.then((info) => {
@@ -55,7 +58,6 @@ function initializePages() {
 	for (let name of Object.keys(pages)) {
 		document.getElementById('tab-'+name).addEventListener('click', openPage.bind(null, name));
 	}
-	openPage(names[0]);
 }
 
 
