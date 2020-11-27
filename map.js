@@ -94,10 +94,16 @@ function clearMap() {
  * Co-ordinate conversion
  */
 function robotPosToMapPos(point) {
-	return {x: (mapCanvas.width / 2) + point.x, y: (mapCanvas.height / 2) + point.y};
+	return {
+		x: (mapCanvas.width / 2) + point.x,
+		y: mapCanvas.height - ((mapCanvas.height / 2) + point.y)
+	};
 }
 function mapPosToViewportPos(point) {
-	return {x: viewport.x + (point.x * scale), y: viewport.y + (point.y * scale)};
+	return {
+		x: viewport.x + (point.x * scale),
+		y: viewport.y + (point.y * scale)
+	};
 }
 
 
@@ -155,13 +161,15 @@ function mouseWheel(event) {
  */
 function handleUpdate(data) {
 	let status = data.cleanMissionStatus;
-	if ((status.phase === 'run' || status.phase === 'hmPostMsn') && data.pose) {
+	if (data.pose) {
 		currentPos = robotPosToMapPos(data.pose.point);
-		currentAngle = data.pose.theta + 90;   // Angle is off by 90 degrees for some reason
+		currentAngle = data.pose.theta - 90;   // Angle is off by 90 degrees for some reason
+	}
+	if ((status.phase === 'run' || status.phase === 'hmPostMsn') && data.pose) {
 		mapContext.lineTo(currentPos.x, currentPos.y);
 		mapContext.stroke();
-		draw();
 	}
+	draw();
 }
 
 
