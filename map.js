@@ -160,16 +160,13 @@ function mouseWheel(event) {
  * Gets position data to draw
  */
 function handleUpdate(data) {
-	let status = data.cleanMissionStatus;
 	if (data.pose) {
 		currentPos = robotPosToMapPos(data.pose.point);
 		currentAngle = data.pose.theta - 90;   // Angle is off by 90 degrees for some reason
-	}
-	if ((status.phase === 'run' || status.phase === 'hmPostMsn') && data.pose) {
 		mapContext.lineTo(currentPos.x, currentPos.y);
 		mapContext.stroke();
+		draw();
 	}
-	draw();
 }
 
 
