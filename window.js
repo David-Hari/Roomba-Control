@@ -26,10 +26,11 @@ function main() {
 	initializePages();
 
 	logger.logMessage('Attempting to connect to Roomba...');
+	setConnectionStatus('Connecting...');
 	roomba = new Roomba.Local(config.blid, config.password, config.ipAddress, 2, config.interval);
 	roomba.on('connect', function() {
 		logger.logMessage('Roomba connected.');
-		setConnectionStatus(true);
+		setConnectionStatus('Connected');
 		openPage('clean');
 
 		roomba.getRobotState(['name'])
@@ -41,6 +42,20 @@ function main() {
 		roomba.on('state', (info) => {
 			setStatus(info);
 		});
+	});
+	roomba.on('offline', function() {
+		logger.logMessage('Cannot connect to Roomba (offline).');
+		setConnectionStatus('Offline');
+	});
+	roomba.on('disconnect', function() {
+		logger.logMessage('Disconnected from Roomba.');
+		setConnectionStatus('Disconnected');
+	});
+	roomba.on('close', function(error) {
+		logger.logMessage('Connection to Roomba closed. ' + error.message);
+	});
+	roomba.on('reconnect', function() {
+		logger.logMessage('Reconnecting...');
 	});
 
 	remote.getCurrentWindow().on('close', (e) => {
@@ -90,11 +105,11 @@ function openPage(pageName) {
  * Changes the display to indicate that the app is either connected or disconnected
  * to the robot.
  */
-function setConnectionStatus(isConnected) {
+function setConnectionStatus(statusText) {
 	let connection = document.getElementById('connection');
 	let text = connection.getElementsByClassName('text')[0];
-	text.innerText = (isConnected ? 'Connected' : 'Disconnected');
-	connection.setAttribute('data-state', (isConnected ? 'on' : 'off'));
+	text.innerText = statusText;
+	connection.setAttribute('data-state', (statusText === 'Connected'  ? 'on' : 'off'));
 }
 
 
